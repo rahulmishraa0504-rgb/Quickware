@@ -1,0 +1,292 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated customer or admin profile stored with owner-only PII protection.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "email": { "type": "string", "format": "email", "minLength": 3, "maxLength": 200 },
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "photoURL": { "type": "string", "maxLength": 500 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "defaultLocality": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "role": { "type": "string", "enum": ["customer", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "displayName", "defaultLocality", "role", "createdAt", "updatedAt"]
+    },
+    "SavedAddress": {
+      "title": "SavedAddress",
+      "description": "Saved Greater Noida site or home delivery address belonging to a user.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "contactName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "phone": { "type": "string", "minLength": 10, "maxLength": 20 },
+        "address": { "type": "string", "minLength": 5, "maxLength": 300 },
+        "locality": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "instructions": { "type": "string", "maxLength": 250 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "label", "contactName", "phone", "address", "locality", "createdAt"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Hardware product listed in the Quickware catalogue.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 2, "maxLength": 160 },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Screws & Fasteners",
+            "Nails & Fixings",
+            "Adhesives",
+            "Hand Tools",
+            "Electrical Fittings",
+            "Plumbing Fittings",
+            "Locks & Security",
+            "Repair Essentials"
+          ]
+        },
+        "brand": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "description": { "type": "string", "minLength": 2, "maxLength": 1000 },
+        "price": { "type": "number" },
+        "mrp": { "type": "number" },
+        "unit": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "inStock": { "type": "boolean" },
+        "stockCount": { "type": "number" },
+        "isPopular": { "type": "boolean" },
+        "isProRecommended": { "type": "boolean" },
+        "rating": { "type": "number" },
+        "reviewCount": { "type": "number" },
+        "imageUrl": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "retailerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "retailerName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "retailerLocality": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "specifications": { "type": "object" },
+        "tags": { "type": "array" }
+      },
+      "required": [
+        "id",
+        "name",
+        "category",
+        "brand",
+        "description",
+        "price",
+        "unit",
+        "inStock",
+        "stockCount",
+        "imageUrl",
+        "retailerId",
+        "retailerName",
+        "retailerLocality"
+      ]
+    },
+    "Retailer": {
+      "title": "Retailer",
+      "description": "Participating local hardware store in Greater Noida (admin-managed).",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 2, "maxLength": 140 },
+        "locality": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "sector": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "address": { "type": "string", "minLength": 2, "maxLength": 300 },
+        "phone": { "type": "string", "minLength": 6, "maxLength": 25 },
+        "rating": { "type": "number" },
+        "ordersFulfilled": { "type": "number" },
+        "active": { "type": "boolean" },
+        "distanceKm": { "type": "number" },
+        "commissionPct": { "type": "number" },
+        "contactPerson": { "type": "string", "minLength": 2, "maxLength": 100 },
+        "imageUrl": { "type": "string", "maxLength": 500 }
+      },
+      "required": [
+        "id",
+        "name",
+        "locality",
+        "sector",
+        "address",
+        "phone",
+        "active",
+        "commissionPct",
+        "contactPerson"
+      ]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer hardware order linked to authenticated userId and Google email.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "orderNumber": { "type": "string", "minLength": 3, "maxLength": 32 },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerEmail": { "type": "string", "format": "email", "minLength": 3, "maxLength": 200 },
+        "customerName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "customerPhone": { "type": "string", "minLength": 10, "maxLength": 25 },
+        "deliveryAddress": { "type": "string", "minLength": 5, "maxLength": 350 },
+        "locality": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "city": { "type": "string", "minLength": 2, "maxLength": 60 },
+        "deliveryInstructions": { "type": "string", "maxLength": 300 },
+        "items": { "type": "array" },
+        "subtotal": { "type": "number" },
+        "deliveryCharge": { "type": "number" },
+        "discount": { "type": "number" },
+        "total": { "type": "number" },
+        "paymentMethod": { "type": "string", "enum": ["cash_on_delivery", "whatsapp_order", "online_simulated"] },
+        "paymentStatus": { "type": "string", "enum": ["Pending", "Paid on Delivery", "Simulated Paid"] },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Order Placed",
+            "Awaiting Retailer Confirmation",
+            "Confirmed",
+            "Preparing Order",
+            "Out for Delivery",
+            "Delivered",
+            "Cancelled"
+          ]
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "retailerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "retailerName": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "estimatedDeliveryTime": { "type": "string", "maxLength": 100 },
+        "timeline": { "type": "array" }
+      },
+      "required": [
+        "id",
+        "orderNumber",
+        "userId",
+        "customerEmail",
+        "customerName",
+        "customerPhone",
+        "deliveryAddress",
+        "locality",
+        "city",
+        "items",
+        "subtotal",
+        "deliveryCharge",
+        "discount",
+        "total",
+        "paymentMethod",
+        "paymentStatus",
+        "status",
+        "createdAt",
+        "updatedAt",
+        "retailerId",
+        "retailerName",
+        "timeline"
+      ]
+    },
+    "CustomerEnquiry": {
+      "title": "CustomerEnquiry",
+      "description": "Custom sourcing request when an item is unavailable in the catalogue.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerEmail": { "type": "string", "format": "email", "minLength": 3, "maxLength": 200 },
+        "customerName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "customerPhone": { "type": "string", "minLength": 10, "maxLength": 25 },
+        "locality": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "itemDescription": { "type": "string", "minLength": 5, "maxLength": 1000 },
+        "category": { "type": "string", "minLength": 2, "maxLength": 80 },
+        "urgency": { "type": "string", "enum": ["Job Stalled (Urgent)", "Within 2 Hours", "Today"] },
+        "status": {
+          "type": "string",
+          "enum": ["Received", "Checking Retailers", "Available for Sourcing", "Fulfilled", "Unserviceable"]
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "adminNotes": { "type": "string", "maxLength": 500 }
+      },
+      "required": [
+        "id",
+        "userId",
+        "customerEmail",
+        "customerName",
+        "customerPhone",
+        "locality",
+        "itemDescription",
+        "category",
+        "urgency",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "EconomicsConfig": {
+      "title": "EconomicsConfig",
+      "description": "Delivery fee and unit economics configuration.",
+      "type": "object",
+      "properties": {
+        "baseDeliveryCharge": { "type": "number" },
+        "freeDeliveryThreshold": { "type": "number" },
+        "retailerCommissionPct": { "type": "number" },
+        "defaultAssumedAOV": { "type": "number" },
+        "defaultAssumedVariableCost": { "type": "number" }
+      },
+      "required": [
+        "baseDeliveryCharge",
+        "freeDeliveryThreshold",
+        "retailerCommissionPct",
+        "defaultAssumedAOV",
+        "defaultAssumedVariableCost"
+      ]
+    },
+    "CartItemDoc": {
+      "title": "CartItemDoc",
+      "description": "Persisted hardware cart item stored under the authenticated user's cart subcollection.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "productId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "quantity": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "productId", "quantity", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private user account documents containing email, phone, and profile settings."
+    },
+    "/users/{userId}/addresses/{addressId}": {
+      "schema": { "$ref": "#/entities/SavedAddress" },
+      "description": "User's saved delivery addresses in Greater Noida."
+    },
+    "/users/{userId}/cart/{productId}": {
+      "schema": { "$ref": "#/entities/CartItemDoc" },
+      "description": "User's persisted shopping cart items synchronized across sessions and devices."
+    },
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Hardware product catalogue readable by storefront and managed by admins."
+    },
+    "/retailers/{retailerId}": {
+      "schema": { "$ref": "#/entities/Retailer" },
+      "description": "Partner hardware retailers managed by admins."
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Customer hardware orders restricted to owner or admin."
+    },
+    "/enquiries/{enquiryId}": {
+      "schema": { "$ref": "#/entities/CustomerEnquiry" },
+      "description": "Custom hardware sourcing requests restricted to owner or admin."
+    },
+    "/config/{configId}": {
+      "schema": { "$ref": "#/entities/EconomicsConfig" },
+      "description": "Delivery fee thresholds and unit economics parameters."
+    }
+  }
+}

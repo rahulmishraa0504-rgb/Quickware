@@ -1,0 +1,6 @@
+{
+  "name": "Quickware - Hyperlocal Everyday Hardware Delivery",
+  "description": "On-demand everyday hardware platform connecting tradespeople, contractors, and households in Greater Noida with local hardware retailers for rapid delivery.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
